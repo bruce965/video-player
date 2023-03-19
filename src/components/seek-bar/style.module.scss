@@ -1,13 +1,16 @@
 
 
 .seekbar {
+  position: relative;
+
   display: flex;
-  margin-top: .6em;
   height: 1.4em;
   opacity: .9;
   cursor: pointer;
 
-  & > *,
+  flex-grow: 1;
+
+  .played,
   &:after {
     margin-top: .5em;
     border-radius: 1em;
@@ -36,4 +39,17 @@
   height: .8em;
   border-radius: 1em;
   background: white;
+}
+
+.hint {
+  position: absolute;
+  bottom: 120%;
+
+  transform: translateX(-50%);
+
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+.hint-hide {
+  opacity: 0;
 }

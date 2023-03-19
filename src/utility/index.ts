@@ -2,8 +2,7 @@
 // The copyright holders license this file to you under the MIT license,
 // available at https://github.com/bruce965/util/raw/master/LICENSE
 
-import { useCallback } from 'react';
-import { DependencyList, EffectCallback, MutableRefObject, Ref, RefCallback, RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { DependencyList, EffectCallback, MutableRefObject, Ref, RefCallback, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 /**
  * Equivalent to {@link useMemo}, but backed by a {@link Ref}.
@@ -180,11 +179,11 @@ const isProbablySameItemList = (a: DataTransferItemList | null, b: DataTransferI
     return true;
 }
 
-export interface DropAreaOptions<T> {
+export interface DropAreaOptions {
     onDrop(items: DataTransferItemList, dropped: boolean): boolean
 }
 
-export const useDropArea = <T extends HTMLElement>(options: DropAreaOptions<T>) => {
+export const useDropArea = <T extends HTMLElement>(options: DropAreaOptions) => {
     const { items } = useDragListener();
 
     const onDrop = options.onDrop;

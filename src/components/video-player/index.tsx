@@ -42,6 +42,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     const [isPlaying, setPlaying] = useState(false);
     const [time, setTime] = useState<{ current: number, total: number }>();
 
+    const [isFiddlingWithUi, setFiddlingWithUi] = useState(false);
+
     const state = useRefMemo(() => {
         let nextPlayIsFromCode = false;
         let nextPauseIsFromCode = false;
@@ -155,17 +157,15 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
     const [forceControlsVisible, summonControls] = useState(true);
     const { set: dismissControls } = useTimer(() => {
-        console.log('hide');
         summonControls(false);
     }, []);
 
     const mouseMoveHandler = useCallback(() => {
-        console.log('move');
         summonControls(true);
         dismissControls(2000); // dismiss after 2 seconds
     }, []);
 
-    const showInterface = forceControlsVisible || !isPlaying;
+    const showInterface = forceControlsVisible || isFiddlingWithUi || !isPlaying;
 
     return <div
         ref={container}
@@ -207,6 +207,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             isPlaying={isPlaying}
             currentTime={time?.current ?? 0}
             totalTime={time?.total ?? 0}
+            onChangeInteracting={setFiddlingWithUi}
             onPlay={state.play}
             onPause={state.pause}
             onSeek={state.seek}

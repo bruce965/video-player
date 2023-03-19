@@ -1,4 +1,5 @@
 import { FC, Fragment, useCallback } from 'react';
+import { formatDuration } from '../../utility/formatDuration';
 import { SeekBar } from '../seek-bar';
 import { Content } from '../video-player';
 import * as classes from './style.module.scss';
@@ -11,6 +12,7 @@ export interface VideoControlsProps {
     isPlaying: boolean
     currentTime: number
     totalTime: number
+    onChangeInteracting?(interacting: boolean): void
     onPlay?(): void
     onPause?(): void
     onSeek?(time: number): void
@@ -24,6 +26,7 @@ export const VideoControls: FC<VideoControlsProps> = ({
     isPlaying,
     currentTime,
     totalTime,
+    onChangeInteracting,
     onPlay,
     onPause,
     onSeek,
@@ -54,18 +57,11 @@ export const VideoControls: FC<VideoControlsProps> = ({
             </div>
         </div>
 
-        <SeekBar time={currentTime} duration={totalTime} onSeek={seekHandler} />
+        <SeekBar
+            time={currentTime}
+            duration={totalTime}
+            onChangeInteracting={onChangeInteracting}
+            onSeek={seekHandler}
+        />
     </div>;
-};
-
-const formatDuration = (seconds: number) => {
-    seconds = Math.floor(seconds);
-    const h = Math.floor(seconds / (60 * 60));
-    const m = Math.floor((seconds % (60 * 60)) / 60);
-    const s = Math.floor(seconds % 60);
-
-    if (h > 0)
-        return `${h}:${m > 9 ? m : `0${m}`}:${s > 9 ? s : `0${s}`}`;
-
-    return `${m}:${s > 9 ? s : `0${s}`}`;
 };

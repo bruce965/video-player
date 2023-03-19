@@ -6,6 +6,9 @@
   right: 0;
   padding: 2em;
 
+  display: flex;
+  align-items: center;
+
   color: white;
 
   opacity: 1;
@@ -37,6 +40,8 @@
 .left {
   display: flex;
   align-items: center;
+
+  padding-right: 1.2em;
 }
 
 .play {
@@ -44,13 +49,14 @@
 }
 .play-inner {
   font-size: 1.8rem;
-  transform: scaleX(1.5);
+  transform: scaleX(1.5) translateY(-.08em);
   overflow: hidden;
 }
 
 .time {
   margin-left: 1em;
   font-size: .9em;
-  margin-top: .2em;
   font-family: sans-serif;
+
+  font-variant-numeric: tabular-nums;
 }
