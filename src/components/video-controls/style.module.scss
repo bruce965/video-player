@@ -1,0 +1,56 @@
+
+.controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2em;
+
+  color: white;
+
+  opacity: 1;
+  transition: opacity 200ms ease;
+
+  user-select: none;
+}
+.controls-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.button {
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  background: none;
+  color: inherit;
+  //opacity: .5;
+  transition: 200ms ease opacity;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    opacity: .9;
+  }
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.play {
+  font-size: 0;
+}
+.play-inner {
+  font-size: 1.8rem;
+  transform: scaleX(1.5);
+  overflow: hidden;
+}
+
+.time {
+  margin-left: 1em;
+  font-size: .9em;
+  margin-top: .2em;
+  font-family: sans-serif;
+}

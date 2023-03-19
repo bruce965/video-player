@@ -1,0 +1,39 @@
+
+
+.seekbar {
+  display: flex;
+  margin-top: .6em;
+  height: 1.4em;
+  opacity: .9;
+  cursor: pointer;
+
+  & > *,
+  &:after {
+    margin-top: .5em;
+    border-radius: 1em;
+    height: .4em;
+  }
+
+  &:after {
+    content: '';
+    flex-grow: 1;
+    background: #fff;
+    opacity: .3;
+  }
+}
+
+.played {
+  background: #fff;
+  position: relative;
+  opacity: 1;
+}
+
+.handle {
+  position: absolute;
+  right: -.4em;
+  top: -.2em;
+  width: .8em;
+  height: .8em;
+  border-radius: 1em;
+  background: white;
+}

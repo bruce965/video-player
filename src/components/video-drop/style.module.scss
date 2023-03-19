@@ -1,0 +1,23 @@
+
+.video-drop {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, .6);
+
+  opacity: 0;
+  transition: opacity 200ms ease;
+
+  pointer-events: none;
+}
+
+.video-drop-active {
+  opacity: 1;
+
+  pointer-events: unset;
+}
+
+.error {
+  position: absolute;
+  inset: 0;
+}
