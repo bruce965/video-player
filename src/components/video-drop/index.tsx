@@ -42,7 +42,7 @@ export const VideoDrop: FC<VideoDropProps> = ({
 
                             const blob = new Blob([str]);
                             const url = URL.createObjectURL(blob);
-                            onSubtitlesAdded({ url, name: `subtitles_${str.length}.${isSrt ? 'srt' : 'vtt'}`, type: 'text/vtt' });
+                            onSubtitlesAdded({ url, name: `subtitles_${str.length}.${isSrt ? "srt" : ""}.vtt`, type: 'text/vtt' });
 
                             resolve(true);
                         }
@@ -76,7 +76,7 @@ export const VideoDrop: FC<VideoDropProps> = ({
 
                             const blob = new Blob([vtt]);
                             const url = URL.createObjectURL(blob);
-                            onSubtitlesAdded({ url, name: file.name, type: file.type });
+                            onSubtitlesAdded({ url, name: file.name + ".vtt", type: 'text/vtt' });
                         }
                         else {
                             const url = URL.createObjectURL(file);
@@ -146,7 +146,9 @@ const isSubRip = (content: string): boolean => {
     return /(^|\n)1[\r\n]/.test(start) && /[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3} --> [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}/.test(start);
 };
 
-const convertSubRipToWebVTT = (content: string): string => {
-    // TODO
-    return content;
+const convertSubRipToWebVTT = (srtContent: string): string => {
+    const vttContent = srtContent
+        .replace(/([0-9 ]+\n[0-9:]{8}),([0-9]{3}) --> ([0-9:]{8}),([0-9]{3}[ \r\n])/g, '$1.$2 --> $3.$4');
+
+    return `WEBVTT\r\n\r\n${vttContent}\r\n\r\n`;
 };
