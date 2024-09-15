@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import * as classes from './style.module.scss';
+import classes from './style.module.css';
 
 export interface MessageProps {
     onDismiss?(): void

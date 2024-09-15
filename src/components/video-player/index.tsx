@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { FC, useRef, useState } from 'react';
 import { useRefMemo, useTimer } from '../../utility';
 import { VideoControls } from '../video-controls';
-import * as classes from './style.module.scss';
+import classes from './style.module.css';
 
 const EMPTY_ARRAY: never[] = [];
 

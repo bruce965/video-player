@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from 'react';
 import { useDragListener, useDropArea } from '../../utility';
 import { Message } from '../message';
 import { Content } from '../video-player';
-import * as classes from './style.module.scss';
+import classes from './style.module.css';
 
 export type ContentKind = 'video' | 'audio' | 'subtitles';
 

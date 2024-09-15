@@ -20,7 +20,7 @@
   line-height: 1;
   background: none;
   color: #fff;
-  //opacity: .5;
+  /*opacity: .5;*/
   transition: 200ms ease opacity;
   cursor: pointer;
 

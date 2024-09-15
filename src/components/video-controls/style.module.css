@@ -27,7 +27,7 @@
   line-height: 1;
   background: none;
   color: inherit;
-  //opacity: .5;
+  /*opacity: .5;*/
   transition: 200ms ease opacity;
   cursor: pointer;
 

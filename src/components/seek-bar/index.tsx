@@ -1,6 +1,6 @@
 import { CSSProperties, FC, MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
-import * as classes from './style.module.scss';
+import classes from './style.module.css';
 
 export interface SeekBarProps {
     time: number

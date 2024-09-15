@@ -2,7 +2,7 @@ import { FC, Fragment, useCallback } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
 import { SeekBar } from '../seek-bar';
 import { Content } from '../video-player';
-import * as classes from './style.module.scss';
+import classes from './style.module.css';
 
 export interface VideoControlsProps {
     show: boolean

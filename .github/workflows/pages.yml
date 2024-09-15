@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Build
-      run: yarn build --public-url /video-player
+      run: yarn build --base /video-player
     - name: Upload Pages artifact
       uses: actions/upload-pages-artifact@v1
       with:
