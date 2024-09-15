@@ -148,6 +148,7 @@ const isSubRip = (content: string): boolean => {
 
 const convertSubRipToWebVTT = (srtContent: string): string => {
     const vttContent = srtContent
+        .replace(/\r\n/g, '\n')
         .replace(/([0-9 ]+\n[0-9:]{8}),([0-9]{3}) --> ([0-9:]{8}),([0-9]{3}[ \r\n])/g, '$1.$2 --> $3.$4');
 
     return `WEBVTT\r\n\r\n${vttContent}\r\n\r\n`;
