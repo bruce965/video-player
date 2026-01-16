@@ -1,0 +1,16 @@
+
+
+.volume-bar {
+  width: 6em;
+}
+
+.mute-button {
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  margin-right: .6em;
+}

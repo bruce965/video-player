@@ -1,6 +1,4 @@
-import { MouseEventHandler } from 'react';
-import { useCallback } from 'react';
-import { FC, useRef, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useRef, useState } from 'react';
 import { useRefMemo, useTimer } from '../../utility';
 import { VideoControls } from '../video-controls';
 import classes from './style.module.css';
@@ -40,6 +38,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     const audio = useRef<HTMLAudioElement>(null);
 
     const [isPlaying, setPlaying] = useState(false);
+    const [volume, setVolume] = useState(1);
     const [time, setTime] = useState<{ current: number, total: number }>();
 
     const [isFiddlingWithUi, setFiddlingWithUi] = useState(false);
@@ -141,6 +140,17 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                 video.current!.currentTime = time;
                 updateTime();
             },
+            setVolume(vol: number) {
+                if (video.current && !video.current.muted) {
+                    video.current.volume = vol;
+                }
+
+                if (audio.current) {
+                    audio.current.volume = vol;
+                }
+
+                setVolume(vol);
+            },
         };
     });
 
@@ -207,10 +217,12 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             isPlaying={isPlaying}
             currentTime={time?.current ?? 0}
             totalTime={time?.total ?? 0}
+            volume={volume}
             onChangeInteracting={setFiddlingWithUi}
             onPlay={state.play}
             onPause={state.pause}
             onSeek={state.seek}
+            onVolumeChange={state.setVolume}
         />
     </div>;
 };

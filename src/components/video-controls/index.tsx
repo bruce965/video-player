@@ -2,6 +2,7 @@ import { FC, Fragment, useCallback } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
 import { SeekBar } from '../seek-bar';
 import { Content } from '../video-player';
+import { VolumeBar } from '../volume-bar';
 import classes from './style.module.css';
 
 export interface VideoControlsProps {
@@ -12,10 +13,12 @@ export interface VideoControlsProps {
     isPlaying: boolean
     currentTime: number
     totalTime: number
+    volume: number
     onChangeInteracting?(interacting: boolean): void
     onPlay?(): void
     onPause?(): void
     onSeek?(time: number): void
+    onVolumeChange?(volume: number): void
 }
 
 export const VideoControls: FC<VideoControlsProps> = ({
@@ -26,10 +29,12 @@ export const VideoControls: FC<VideoControlsProps> = ({
     isPlaying,
     currentTime,
     totalTime,
+    volume,
     onChangeInteracting,
     onPlay,
     onPause,
     onSeek,
+    onVolumeChange,
 }) => {
     const seekHandler = useCallback((position: number) => {
         onSeek?.(position * totalTime);
@@ -55,6 +60,11 @@ export const VideoControls: FC<VideoControlsProps> = ({
             <div className={classes['time']}>
                 <span>{formatDuration(currentTime)}</span> / <span>{formatDuration(totalTime)}</span>
             </div>
+            <VolumeBar
+                volume={volume}
+                onChangeInteracting={onChangeInteracting}
+                onVolumeChange={onVolumeChange}
+            />
         </div>
 
         <SeekBar
