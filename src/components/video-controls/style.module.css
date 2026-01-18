@@ -43,6 +43,12 @@
 
   padding-right: 1.2em;
 }
+.right {
+  display: flex;
+  align-items: center;
+
+  padding-left: 1.2em;
+}
 
 .play {
   font-size: 0;
@@ -60,4 +66,8 @@
   font-family: sans-serif;
 
   font-variant-numeric: tabular-nums;
+}
+
+.fullscreen-inner {
+  font-size: 1.2rem;
 }

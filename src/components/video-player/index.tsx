@@ -175,6 +175,16 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
         dismissControls(2000); // dismiss after 2 seconds
     }, []);
 
+    const toggleFullscreen = useCallback(() => {
+        if (!container.current)
+            return;
+
+        if (document.fullscreenElement)
+            document.exitFullscreen();
+        else
+            container.current.requestFullscreen();
+    }, []);
+
     const showInterface = forceControlsVisible || isFiddlingWithUi || !isPlaying;
 
     return <div
@@ -223,6 +233,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             onPause={state.pause}
             onSeek={state.seek}
             onVolumeChange={state.setVolume}
+            onFullscreenChange={toggleFullscreen}
         />
     </div>;
 };

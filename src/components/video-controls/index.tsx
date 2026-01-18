@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback } from 'react';
+import { FC, Fragment, ReactNode, useCallback, useEffect, useState } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
 import { SeekBar } from '../seek-bar';
 import { Content } from '../video-player';
@@ -19,6 +19,7 @@ export interface VideoControlsProps {
     onPause?(): void
     onSeek?(time: number): void
     onVolumeChange?(volume: number): void
+    onFullscreenChange?(fullscreen: boolean): void
 }
 
 export const VideoControls: FC<VideoControlsProps> = ({
@@ -35,10 +36,15 @@ export const VideoControls: FC<VideoControlsProps> = ({
     onPause,
     onSeek,
     onVolumeChange,
+    onFullscreenChange,
 }) => {
     const seekHandler = useCallback((position: number) => {
         onSeek?.(position * totalTime);
     }, [totalTime, onSeek]);
+
+    const playPauseHandler = useCallback((play: boolean) => {
+        (play ? onPlay : onPause)?.();
+    }, [onPause, onPlay]);
 
     return <div
         className={classes['controls'] + (show ? '' : (' ' + classes['controls-hidden']))}
@@ -51,15 +57,19 @@ export const VideoControls: FC<VideoControlsProps> = ({
         </div>
 
         <div className={classes['left']}>
-            <button
-                className={classes['button'] + ' ' + classes['play']}
-                onClick={isPlaying ? () => onPause?.() : () => onPlay?.()}
-            >
-                <div className={classes['play-inner']}>{isPlaying ? "⏸" : "⏵"}</div>
-            </button>
+            <ToggleButton
+                isActive={isPlaying}
+                className={classes['play']}
+                innerClassName={classes['play-inner']}
+                activeContent={"⏸"}
+                inactiveContent={"⏵"}
+                onChange={playPauseHandler}
+            />
+
             <div className={classes['time']}>
                 <span>{formatDuration(currentTime)}</span> / <span>{formatDuration(totalTime)}</span>
             </div>
+
             <VolumeBar
                 volume={volume}
                 onChangeInteracting={onChangeInteracting}
@@ -73,5 +83,76 @@ export const VideoControls: FC<VideoControlsProps> = ({
             onChangeInteracting={onChangeInteracting}
             onSeek={seekHandler}
         />
+
+        <div className={classes['right']}>
+            <FullscreenButton onChange={onFullscreenChange} />
+        </div>
     </div>;
+};
+
+interface ToggleButtonProps {
+    isActive: boolean
+    className?: string
+    innerClassName?: string
+    activeClassName?: string
+    inactiveClassName?: string
+    activeContent: ReactNode
+    inactiveContent: ReactNode
+    onChange?(active: boolean): void
+}
+const ToggleButton: FC<ToggleButtonProps> = ({
+    isActive,
+    className,
+    innerClassName,
+    activeClassName,
+    inactiveClassName,
+    activeContent,
+    inactiveContent,
+    onChange,
+}) => {
+    const clickHandler = useCallback(() => {
+        onChange?.(!isActive);
+    }, [isActive, onChange]);
+
+    const extraClassName = isActive ? activeClassName : inactiveClassName;
+
+    return <button
+        className={classes['button'] + (className == null ? '' : (' ' + className)) + (extraClassName == null ? '' : (' ' + extraClassName))}
+        onClick={clickHandler}
+    >
+        <div className={innerClassName}>
+            {isActive ? activeContent : inactiveContent}
+        </div>
+    </button>;
+}
+
+interface FullscreenButtonProps {
+    onChange?(fullscreen: boolean): void
+}
+
+const FullscreenButton: FC<FullscreenButtonProps> = ({
+    onChange,
+}) => {
+    const [isFullscreen, setFullscreen] = useState(false);
+
+    useEffect(() => {
+        const checkFullscreen = () => {
+            setFullscreen(!!document.fullscreenElement);
+        };
+
+        checkFullscreen();
+        document.addEventListener('full', checkFullscreen);
+
+        return () => {
+            document.removeEventListener('fullscreenchange', checkFullscreen);
+        };
+    }, []);
+
+    return <ToggleButton
+        isActive={isFullscreen}
+        activeContent={"⛶"}
+        innerClassName={classes['fullscreen-inner']}
+        inactiveContent={"⛶"}
+        onChange={onChange}
+    />;
 };
