@@ -1,4 +1,11 @@
 
+.bar-container {
+  --bar-handle-size: .8em;
+  --bar-color: #fff;
+
+  padding: 0 calc(var(--bar-handle-size) / 2);
+  box-sizing: border-box; /* in case a width is set */
+}
 .bar {
   position: relative;
 
@@ -10,31 +17,32 @@
   &:after {
     content: '';
     flex-grow: 1;
-    background: #fff;
+    background: var(--bar-color);
     opacity: .3;
-    margin-top: .5em;
+    margin: .5em calc(var(--bar-handle-size) / -2) 0 0;
     border-radius: 1em;
     height: .4em;
   }
 }
 
 .filled {
-  background: #fff;
+  background: var(--bar-color);
   position: relative;
   opacity: 1;
-  margin-top: .5em;
+  margin: .5em 0 0 calc(var(--bar-handle-size) / -2);
+  padding: 0 calc(var(--bar-handle-size) / 2) 0 0;
   border-radius: 1em;
   height: .4em;
 }
 
 .handle {
   position: absolute;
-  right: -.4em;
+  right: calc(var(--bar-handle-size) / -2);
   top: -.2em;
   width: .8em;
   height: .8em;
   border-radius: 1em;
-  background: white;
+  background: var(--bar-color);
 }
 
 .hint {

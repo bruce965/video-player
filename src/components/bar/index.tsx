@@ -3,11 +3,10 @@ import classes from './style.module.css';
 
 export interface BarProps {
     value: number
-    clampValue?: boolean
+    className?: string
+    renderHint?(position: number): ReactNode
     onChangeInteracting?(interacting: boolean): void
     onValueChange?(value: number): void
-    renderHint?(position: number): ReactNode
-    className?: string
 }
 
 export const Bar: FC<BarProps> = ({
@@ -66,25 +65,27 @@ export const Bar: FC<BarProps> = ({
     }), [hintPosition]);
 
     return (
-        <div
-            ref={barRef}
-            className={classes['bar'] + (className == null ? '' : (' ' + className))}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseUpdate}
-            onMouseUp={handleMouseUpdate}
-            onMouseLeave={() => {
-                setHintPosition(hintPosition);
-                setHintVisible(false);
-            }}
-        >
-            {renderHint && <div
-                className={classes['hint'] + ((dragging || hintVisible) ? '' : (' ' + classes['hint-hide']))}
-                style={hintStyle}
+        <div className={classes['bar-container'] + (className == null ? '' : (' ' + className))}>
+            <div
+                ref={barRef}
+                className={classes['bar']}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseUpdate}
+                onMouseUp={handleMouseUpdate}
+                onMouseLeave={() => {
+                    setHintPosition(hintPosition);
+                    setHintVisible(false);
+                }}
             >
-                {renderHint(hintPosition)}
-            </div>}
-            <div className={classes['filled']} style={filledStyle}>
-                <div className={classes['handle']} />
+                {renderHint && <div
+                    className={classes['hint'] + ((dragging || hintVisible) ? '' : (' ' + classes['hint-hide']))}
+                    style={hintStyle}
+                >
+                    {renderHint(hintPosition)}
+                </div>}
+                <div className={classes['filled']} style={filledStyle}>
+                    <div className={classes['handle']} />
+                </div>
             </div>
         </div>
     );
