@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2023-2024 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC, useCallback, useState } from 'react';
 import { useDragListener, useDropArea } from '../../utility';
 import { Message } from '../message';

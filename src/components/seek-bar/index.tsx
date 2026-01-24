@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
 import { Bar } from '../bar';

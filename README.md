@@ -15,7 +15,19 @@ NOTE: this is not an embeddable video player, this is a web application.
 
 ## License
 
-This project is licensed under the [MIT license](LICENSE).
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, version 3 of the License.
 
-Some components may be available elsewhere under different license terms,
-please refer to the individual source files.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see https://www.gnu.org/licenses/.
+
+Some files may be licensed under a different, but compatible license. Refer to
+the SPDX identifier at the beginning of each file for file-specific licenses.
+
+See [LICENSES/SPDX-license-identifiers.txt](LICENSES/SPDX-license-identifiers.txt)
+for a list of the licenses used in the code.

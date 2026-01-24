@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC, useCallback, useState } from 'react';
 import { Bar } from '../bar';
 import classes from './style.module.css';

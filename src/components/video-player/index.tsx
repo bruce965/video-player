@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2023, 2026 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC, MouseEventHandler, useCallback, useRef, useState } from 'react';
 import { useRefMemo, useTimer } from '../../utility';
 import { VideoControls } from '../video-controls';

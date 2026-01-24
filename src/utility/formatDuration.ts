@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
+// SPDX-License-Identifier: MIT
 
 export const formatDuration = (seconds: number) => {
     seconds = Math.floor(seconds);

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2023-2024, 2026 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC, Fragment, ReactNode, useCallback, useEffect, useState } from 'react';
 import { formatDuration } from '../../utility/formatDuration';
 import { SeekBar } from '../seek-bar';

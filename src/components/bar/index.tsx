@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2023-2024, 2026 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { CSSProperties, FC, MouseEventHandler, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classes from './style.module.css';
 

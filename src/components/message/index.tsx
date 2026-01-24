@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
 import { FC, ReactNode } from 'react';
 import classes from './style.module.css';
 

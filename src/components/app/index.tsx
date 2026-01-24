@@ -1,5 +1,7 @@
-import { useCallback } from 'react';
-import { FC, useEffect, useState } from 'react';
+// SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
+// SPDX-License-Identifier: AGPL-3.0-only
+
+import { FC, useCallback, useEffect, useState } from 'react';
 import { VideoDrop } from '../video-drop';
 import { Content, VideoPlayer } from '../video-player';
 

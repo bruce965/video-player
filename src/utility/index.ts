@@ -1,6 +1,5 @@
-// Copyright (c) 2023 Fabio Iotti
-// The copyright holders license this file to you under the MIT license,
-// available at https://github.com/bruce965/util/raw/master/LICENSE
+// SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
+// SPDX-License-Identifier: MIT
 
 import { DependencyList, EffectCallback, MutableRefObject, Ref, RefCallback, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
