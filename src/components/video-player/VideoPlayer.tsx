@@ -1,35 +1,34 @@
 // SPDX-FileCopyrightText: Copyright 2023, 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { VideoControls } from '@components/video-controls';
+import { useRefMemo } from '@hooks/useRefMemo';
+import { useTimer } from '@hooks/useTimer';
 import { FC, MouseEventHandler, useCallback, useRef, useState } from 'react';
-import { useRefMemo, useTimer } from '../../utility';
-import { VideoControls } from '../video-controls';
-import classes from './style.module.css';
+import classes from './VideoPlayer.module.css';
 
-const EMPTY_ARRAY: never[] = [];
-
-export interface Content {
-    url: string
-    name: string
-    type: string
+export interface VideoPlayerContent {
+    url: string;
+    name: string;
+    type: string;
 }
 
 export interface VideoPlayerProps {
-    videoTracks?: Content[]
-    audioTracks?: Content[]
-    subtitleTracks?: Content[]
-    selectedVideo?: Content | null
-    selectedAudio?: Content | null
-    selectedSubtitles?: Content | null
-    onVideoChange?(video: Content | null): void
-    onAudioChange?(audio: Content | null): void
-    onSubtitlesChange?(subtitles: Content | null): void
+    videoTracks?: VideoPlayerContent[]
+    audioTracks?: VideoPlayerContent[]
+    subtitleTracks?: VideoPlayerContent[]
+    selectedVideo?: VideoPlayerContent | null
+    selectedAudio?: VideoPlayerContent | null
+    selectedSubtitles?: VideoPlayerContent | null
+    onVideoChange?(video: VideoPlayerContent | null): void
+    onAudioChange?(audio: VideoPlayerContent | null): void
+    onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
 }
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({
-    videoTracks = EMPTY_ARRAY,
-    audioTracks = EMPTY_ARRAY,
-    subtitleTracks = EMPTY_ARRAY,
+    videoTracks = [],
+    audioTracks = [],
+    subtitleTracks = [],
     selectedVideo,
     selectedAudio,
     selectedSubtitles,

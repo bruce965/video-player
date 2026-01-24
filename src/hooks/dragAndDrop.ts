@@ -1,66 +1,8 @@
 // SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
 // SPDX-License-Identifier: MIT
 
-import { DependencyList, EffectCallback, MutableRefObject, Ref, RefCallback, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-/**
- * Equivalent to {@link useMemo}, but backed by a {@link Ref}.
- *
- * According to React's documentation, {@link useMemo} may throw away cached
- * values in the future. If such behavior is undesired, this hook is a safe
- * drop-in replacement.
- */
-export const useRefMemo = <T,>(factory: () => T) => {
-    const ref = useRef<T>();
-    const memoized = ref.current ??= factory();
-    return memoized;
-};
-
-/**
- * Equivalent to {@link useRef}, but builds a {@link RefCallback} instead of a
- * {@link MutableRefObject}.
- *
- * The callback function may return a destructor like {@link useEffect}.
- */
-export const useCallbackRef = <T,>(
-    callback: (instance: T) => ReturnType<EffectCallback>,
-    deps?: DependencyList
-) => {
-    const ref = useMemo<RefCallback<T>>(() => {
-        let destructor: ReturnType<EffectCallback>;
-
-        return el => {
-            destructor?.();
-            destructor = el == null ? undefined : callback(el);
-        };
-    }, deps ?? [callback]);
-
-    return ref;
-};
-
-export const useTimer = (callback: () => void, deps?: DependencyList) => {
-    const handle = useRef<number>();
-
-    const set = useCallback((timeout: number) => {
-        clearTimeout(handle.current);
-        handle.current = setTimeout(callback, timeout);
-    }, deps ?? [callback]);
-
-    const clear = useCallback(() => {
-        clearTimeout(handle.current);
-    }, []);
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(handle.current);
-        };
-    }, []);
-
-    return {
-        set,
-        clear,
-    };
-};
+import { RefCallback, RefObject, useEffect, useMemo, useState } from 'react';
+import { useCallbackRef } from './useCallbackRef';
 
 export interface DragListenerOptions {
     target?: RefObject<unknown>

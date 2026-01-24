@@ -1,18 +1,20 @@
 // SPDX-FileCopyrightText: Copyright 2023-2024, 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { FC, Fragment, ReactNode, useCallback, useEffect, useState } from 'react';
-import { formatDuration } from '../../utility/formatDuration';
-import { SeekBar } from '../seek-bar';
-import { Content } from '../video-player';
-import { VolumeBar } from '../volume-bar';
-import classes from './style.module.css';
+import { SeekBar } from '@components/seek-bar';
+import { VideoPlayerContent } from '@components/video-player';
+import { VolumeBar } from '@components/volume-bar/VolumeBar';
+import { formatDuration } from '@utils/formatDuration';
+import { FC, Fragment, useCallback } from 'react';
+import { FullscreenButton } from './FullscreenButton';
+import { ToggleButton } from './ToggleButton';
+import classes from './VideoControls.module.css';
 
 export interface VideoControlsProps {
     show: boolean
-    videoTracks: Content[]
-    audioTracks: Content[]
-    subtitleTracks: Content[]
+    videoTracks: VideoPlayerContent[]
+    audioTracks: VideoPlayerContent[]
+    subtitleTracks: VideoPlayerContent[]
     isPlaying: boolean
     currentTime: number
     totalTime: number
@@ -91,71 +93,4 @@ export const VideoControls: FC<VideoControlsProps> = ({
             <FullscreenButton onChange={onFullscreenChange} />
         </div>
     </div>;
-};
-
-interface ToggleButtonProps {
-    isActive: boolean
-    className?: string
-    innerClassName?: string
-    activeClassName?: string
-    inactiveClassName?: string
-    activeContent: ReactNode
-    inactiveContent: ReactNode
-    onChange?(active: boolean): void
-}
-const ToggleButton: FC<ToggleButtonProps> = ({
-    isActive,
-    className,
-    innerClassName,
-    activeClassName,
-    inactiveClassName,
-    activeContent,
-    inactiveContent,
-    onChange,
-}) => {
-    const clickHandler = useCallback(() => {
-        onChange?.(!isActive);
-    }, [isActive, onChange]);
-
-    const extraClassName = isActive ? activeClassName : inactiveClassName;
-
-    return <button
-        className={classes['button'] + (className == null ? '' : (' ' + className)) + (extraClassName == null ? '' : (' ' + extraClassName))}
-        onClick={clickHandler}
-    >
-        <div className={innerClassName}>
-            {isActive ? activeContent : inactiveContent}
-        </div>
-    </button>;
-}
-
-interface FullscreenButtonProps {
-    onChange?(fullscreen: boolean): void
-}
-
-const FullscreenButton: FC<FullscreenButtonProps> = ({
-    onChange,
-}) => {
-    const [isFullscreen, setFullscreen] = useState(false);
-
-    useEffect(() => {
-        const checkFullscreen = () => {
-            setFullscreen(!!document.fullscreenElement);
-        };
-
-        checkFullscreen();
-        document.addEventListener('full', checkFullscreen);
-
-        return () => {
-            document.removeEventListener('fullscreenchange', checkFullscreen);
-        };
-    }, []);
-
-    return <ToggleButton
-        isActive={isFullscreen}
-        activeContent={"⛶"}
-        innerClassName={classes['fullscreen-inner']}
-        inactiveContent={"⛶"}
-        onChange={onChange}
-    />;
 };

@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { Bar } from '@components/bar';
 import { FC, useCallback, useState } from 'react';
-import { Bar } from '../bar';
-import classes from './style.module.css';
+import classes from './VolumeBar.module.css';
 
 export interface VolumeBarProps {
     volume: number

@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { useDragListener } from '@hooks/dragAndDrop';
 import { createElement, DragEventHandler, useCallback, useMemo } from 'react';
-import { useDragListener } from '../../utility';
 
 export type DropAreaProps<T extends keyof JSX.IntrinsicElements> = {
     elementType?: T

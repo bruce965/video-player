@@ -23,22 +23,6 @@
   pointer-events: none;
 }
 
-.button {
-  border: 0;
-  padding: 0;
-  line-height: 1;
-  background: none;
-  color: inherit;
-  /*opacity: .5;*/
-  transition: 200ms ease opacity;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    opacity: .9;
-  }
-}
-
 .left {
   display: flex;
   align-items: center;
@@ -68,8 +52,4 @@
   font-family: sans-serif;
 
   font-variant-numeric: tabular-nums;
-}
-
-.fullscreen-inner {
-  font-size: 1.2rem;
 }

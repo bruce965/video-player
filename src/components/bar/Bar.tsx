@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { CSSProperties, FC, MouseEventHandler, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import classes from './style.module.css';
+import classes from './Bar.module.css';
 
 export interface BarProps {
     value: number

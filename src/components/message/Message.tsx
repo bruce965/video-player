@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { FC, ReactNode } from 'react';
-import classes from './style.module.css';
+import classes from './Message.module.css';
 
 export interface MessageProps {
     onDismiss?(): void

@@ -1,18 +1,18 @@
 // SPDX-FileCopyrightText: Copyright 2023-2024 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { Message } from '@components/message';
+import { VideoPlayerContent } from '@components/video-player';
+import { useDragListener, useDropArea } from '@hooks/dragAndDrop';
 import { FC, useCallback, useState } from 'react';
-import { useDragListener, useDropArea } from '../../utility';
-import { Message } from '../message';
-import { Content } from '../video-player';
-import classes from './style.module.css';
+import classes from './VideoDrop.module.css';
 
-export type ContentKind = 'video' | 'audio' | 'subtitles';
+type ContentKind = 'video' | 'audio' | 'subtitles';
 
 export interface VideoDropProps {
-    onVideoAdded(video: Content): void
-    onAudioAdded(audio: Content): void
-    onSubtitlesAdded(subtitles: Content): void
+    onVideoAdded(video: VideoPlayerContent): void
+    onAudioAdded(audio: VideoPlayerContent): void
+    onSubtitlesAdded(subtitles: VideoPlayerContent): void
 }
 
 export const VideoDrop: FC<VideoDropProps> = ({
