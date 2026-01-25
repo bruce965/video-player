@@ -4,7 +4,7 @@
 import { VideoControls } from '@components/video-controls';
 import { useRefMemo } from '@hooks/useRefMemo';
 import { useTimer } from '@hooks/useTimer';
-import { FC, MouseEventHandler, useCallback, useRef, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import classes from './VideoPlayer.module.css';
 
 export interface VideoPlayerContent {
@@ -49,6 +49,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
         let nextPlayIsFromCode = false;
         let nextPauseIsFromCode = false;
         let userWantsToPlay = false;
+
+        let currentVideoSource: VideoPlayerContent | null = null;
+        let currentAudioSource: VideoPlayerContent | null = null;
+        let currentSubtitlesSource: VideoPlayerContent | null = null;
 
         const updatePlayState = () => {
             setPlaying(userWantsToPlay);
@@ -131,6 +135,36 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                 audio.current!.playbackRate = video.current!.playbackRate;
             },
 
+            sourceChangeHandler(selectedVideo: VideoPlayerContent | null, selectedAudio: VideoPlayerContent | null, selectedSubtitles: VideoPlayerContent | null) {
+                const reloadVideo = currentVideoSource !== selectedVideo;
+                const reloadAudio = currentAudioSource !== selectedAudio;
+                const reloadSubtitles = selectedSubtitles !== currentSubtitlesSource;
+
+                currentVideoSource = selectedVideo;
+                currentAudioSource = selectedAudio;
+                currentSubtitlesSource = selectedSubtitles;
+
+                const currentTime = video.current!.currentTime;
+
+                if (reloadVideo)
+                    video.current!.load();
+
+                if (reloadAudio)
+                    audio.current!.load();
+
+                if (reloadSubtitles) {
+                    for (const track of video.current!.textTracks) {
+                        if (track.label === selectedSubtitles?.name)
+                            track.mode = 'showing';
+                        else if (track.mode === 'showing')
+                            track.mode = 'hidden';
+                    }
+                }
+
+                if (reloadAudio || reloadVideo)
+                    this.seek(currentTime);
+            },
+
             updateTime,
             play() {
                 video.current!.play();
@@ -187,6 +221,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             container.current.requestFullscreen();
     }, []);
 
+    useEffect(() => {
+        state.sourceChangeHandler(selectedVideo ?? null, selectedAudio ?? null, selectedSubtitles ?? null);
+    }, [selectedVideo, selectedAudio, selectedSubtitles]);
+
     const showInterface = forceControlsVisible || isFiddlingWithUi || !isPlaying;
 
     return <div
@@ -226,6 +264,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             videoTracks={videoTracks}
             audioTracks={audioTracks}
             subtitleTracks={subtitleTracks}
+            selectedVideo={selectedVideo}
+            selectedAudio={selectedAudio}
+            selectedSubtitles={selectedSubtitles}
             isPlaying={isPlaying}
             currentTime={time?.current ?? 0}
             totalTime={time?.total ?? 0}
@@ -236,6 +277,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             onSeek={state.seek}
             onVolumeChange={state.setVolume}
             onFullscreenChange={toggleFullscreen}
+            onVideoChange={onVideoChange}
+            onAudioChange={onAudioChange}
+            onSubtitlesChange={onSubtitlesChange}
         />
     </div>;
 };

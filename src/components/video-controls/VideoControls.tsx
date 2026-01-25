@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { SeekBar } from '@components/seek-bar';
+import { TrackSelector } from '@components/track-selector';
 import { VideoPlayerContent } from '@components/video-player';
 import { VolumeBar } from '@components/volume-bar/VolumeBar';
 import { formatDuration } from '@utils/formatDuration';
-import { FC, Fragment, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { FullscreenButton } from './FullscreenButton';
 import { ToggleButton } from './ToggleButton';
 import classes from './VideoControls.module.css';
@@ -15,6 +16,9 @@ export interface VideoControlsProps {
     videoTracks: VideoPlayerContent[]
     audioTracks: VideoPlayerContent[]
     subtitleTracks: VideoPlayerContent[]
+    selectedVideo?: VideoPlayerContent | null
+    selectedAudio?: VideoPlayerContent | null
+    selectedSubtitles?: VideoPlayerContent | null
     isPlaying: boolean
     currentTime: number
     totalTime: number
@@ -25,6 +29,9 @@ export interface VideoControlsProps {
     onSeek?(time: number): void
     onVolumeChange?(volume: number): void
     onFullscreenChange?(fullscreen: boolean): void
+    onVideoChange?(video: VideoPlayerContent | null): void
+    onAudioChange?(audio: VideoPlayerContent | null): void
+    onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
 }
 
 export const VideoControls: FC<VideoControlsProps> = ({
@@ -32,6 +39,9 @@ export const VideoControls: FC<VideoControlsProps> = ({
     videoTracks,
     audioTracks,
     subtitleTracks,
+    selectedVideo,
+    selectedAudio,
+    selectedSubtitles,
     isPlaying,
     currentTime,
     totalTime,
@@ -42,6 +52,9 @@ export const VideoControls: FC<VideoControlsProps> = ({
     onSeek,
     onVolumeChange,
     onFullscreenChange,
+    onVideoChange,
+    onAudioChange,
+    onSubtitlesChange,
 }) => {
     const seekHandler = useCallback((position: number) => {
         onSeek?.(position * totalTime);
@@ -54,12 +67,17 @@ export const VideoControls: FC<VideoControlsProps> = ({
     return <div
         className={classes['controls'] + (show ? '' : (' ' + classes['controls-hidden']))}
     >
-        {/* TODO: remove. */}
-        <div style={{ whiteSpace: 'pre-wrap', padding: '1em', position: 'absolute', bottom: '100%' }}>
-            Video tracks: {videoTracks.map(v => <Fragment key={v.url}><br/><a href={v.url} target="_blank">{v.name}</a> {v.type}</Fragment>)}{videoTracks.length ? "" : <><br/>none</>}<br/><br/>
-            Audio tracks: {audioTracks.map(a => <Fragment key={a.url}><br/><a href={a.url} target="_blank">{a.name}</a> {a.type}</Fragment>)}{audioTracks.length ? "" : <><br/>none</>}<br/><br/>
-            Subtitle tracks: {subtitleTracks.map(s => <Fragment key={s.url}><br/><a href={s.url} target="_blank">{s.name}</a> {s.type}</Fragment>)}{subtitleTracks.length ? "" : <><br/>none</>}
-        </div>
+        <TrackSelector
+            videoTracks={videoTracks}
+            audioTracks={audioTracks}
+            subtitleTracks={subtitleTracks}
+            selectedVideo={selectedVideo}
+            selectedAudio={selectedAudio}
+            selectedSubtitles={selectedSubtitles}
+            onVideoChange={onVideoChange}
+            onAudioChange={onAudioChange}
+            onSubtitlesChange={onSubtitlesChange}
+        />
 
         <div className={classes['left']}>
             <ToggleButton

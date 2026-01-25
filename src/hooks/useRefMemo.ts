@@ -11,7 +11,7 @@ import { useRef } from 'react';
  * drop-in replacement.
  */
 export const useRefMemo = <T,>(factory: () => T) => {
-    const ref = useRef<T>();
+    const ref = useRef<T>(undefined);
     const memoized = ref.current ??= factory();
     return memoized;
 };

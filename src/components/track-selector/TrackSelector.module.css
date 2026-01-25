@@ -1,0 +1,15 @@
+/* SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti */
+/* SPDX-License-Identifier: AGPL-3.0-only */
+
+.track-selector {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: min(100vw, 500px);
+    box-sizing: border-box;
+    padding: 0 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    white-space: pre-wrap;
+}

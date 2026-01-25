@@ -1,0 +1,45 @@
+/* SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti */
+/* SPDX-License-Identifier: AGPL-3.0-only */
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.group-title {
+    font-weight: bold;
+    margin-bottom: 0.3em;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.track {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+    padding: 0.3em 0.6em;
+    border-radius: 0.3em;
+    transition: background-color 150ms ease;
+}
+
+.track:hover {
+    background: rgba(0, 0, 0, .2);
+}
+
+.track-selected {
+    background: rgba(0, 0, 0, .6);
+    font-weight: bold;
+}
+
+.track-selected:hover {
+    background: rgba(0, 0, 0, .8);
+}
+
+.track-none {
+    font-style: italic;
+    opacity: 0.7;
+}
