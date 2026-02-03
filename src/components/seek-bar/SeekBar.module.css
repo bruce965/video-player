@@ -2,5 +2,15 @@
 /* SPDX-License-Identifier: AGPL-3.0-only */
 
 .seekbar {
-  flex-grow: 1;
+    flex-grow: 1;
+}
+
+.hint-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hint-time {
+    display: block;
 }

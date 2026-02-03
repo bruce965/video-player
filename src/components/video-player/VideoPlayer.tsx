@@ -238,6 +238,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             //controls
             muted={selectedAudio != null}
             preload='metadata'
+            playsInline
             className={classes['video']}
             onPlay={state.videoPlayHandler}
             onPause={state.videoPauseHandler}

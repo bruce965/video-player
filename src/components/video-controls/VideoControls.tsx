@@ -103,6 +103,7 @@ export const VideoControls: FC<VideoControlsProps> = ({
         <SeekBar
             time={currentTime}
             duration={totalTime}
+            videoSrc={selectedVideo?.url}
             onChangeInteracting={onChangeInteracting}
             onSeek={seekHandler}
         />

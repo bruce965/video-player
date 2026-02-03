@@ -1,0 +1,14 @@
+/* SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti */
+/* SPDX-License-Identifier: AGPL-3.0-only */
+
+.thumbnail {
+    display: block;
+    max-width: 200px;
+    height: 100px;
+    border-radius: .3em;
+    margin-bottom: .3em;
+    background: #000;
+
+    /*filter: blur(.4px);*/
+    image-rendering: smooth;
+}
