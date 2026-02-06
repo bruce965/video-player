@@ -32,6 +32,9 @@ export interface VideoControlsProps {
     onVideoChange?(video: VideoPlayerContent | null): void
     onAudioChange?(audio: VideoPlayerContent | null): void
     onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
+    onVideoAdded?(video: VideoPlayerContent): void
+    onAudioAdded?(audio: VideoPlayerContent): void
+    onSubtitlesAdded?(subtitles: VideoPlayerContent): void
 }
 
 export const VideoControls: FC<VideoControlsProps> = ({
@@ -55,6 +58,9 @@ export const VideoControls: FC<VideoControlsProps> = ({
     onVideoChange,
     onAudioChange,
     onSubtitlesChange,
+    onVideoAdded,
+    onAudioAdded,
+    onSubtitlesAdded,
 }) => {
     const seekHandler = useCallback((position: number) => {
         onSeek?.(position * totalTime);
@@ -77,6 +83,9 @@ export const VideoControls: FC<VideoControlsProps> = ({
             onVideoChange={onVideoChange}
             onAudioChange={onAudioChange}
             onSubtitlesChange={onSubtitlesChange}
+            onVideoAdded={onVideoAdded}
+            onAudioAdded={onAudioAdded}
+            onSubtitlesAdded={onSubtitlesAdded}
         />
 
         <div className={classes['left']}>

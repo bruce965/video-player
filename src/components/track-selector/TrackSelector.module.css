@@ -13,3 +13,23 @@
     gap: 2em;
     white-space: pre-wrap;
 }
+
+.file-input {
+    display: none;
+}
+
+.open-button {
+    background: rgba(0, 0, 0, .6);
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.3em 0.6em;
+    border-radius: 0.3em;
+    transition: background-color 150ms ease;
+}
+
+.open-button:hover {
+    background: rgba(0, 0, 0, .8);
+}

@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { VideoDrop } from '@components/video-drop';
 import { VideoPlayer, VideoPlayerContent } from '@components/video-player';
 import { FC, useCallback, useEffect, useState } from 'react';
 
@@ -42,7 +41,7 @@ export const App: FC = () => {
         setSubtitles(current => current ?? subtitles);
     }, []);
 
-    return <>
+    return (
         <VideoPlayer
             videoTracks={videoTracks}
             audioTracks={audioTracks}
@@ -53,12 +52,9 @@ export const App: FC = () => {
             onVideoChange={setVideo}
             onAudioChange={setAudio}
             onSubtitlesChange={setSubtitles}
-        />
-
-        <VideoDrop
             onVideoAdded={handleVideoAdded}
             onAudioAdded={handleAudioAdded}
             onSubtitlesAdded={handleSubtitlesAdded}
         />
-    </>;
+    );
 };

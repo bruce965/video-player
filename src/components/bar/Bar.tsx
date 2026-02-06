@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: Copyright 2023-2024, 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { CSSProperties, FC, MouseEventHandler, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, MouseEventHandler, ReactNode, TouchEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classes from './Bar.module.css';
 
 export interface BarProps {
@@ -22,6 +22,9 @@ export const Bar: FC<BarProps> = ({
     const barRef = useRef<HTMLDivElement>(null);
 
     const [dragging, setDragging] = useState(false);
+    const [hintPosition, setHintPosition] = useState(0);
+    const [hintVisible, setHintVisible] = useState(false);
+
     useEffect(() => {
         onChangeInteracting?.(dragging);
     }, [onChangeInteracting, dragging]);
@@ -48,12 +51,48 @@ export const Bar: FC<BarProps> = ({
         handleMove(e.nativeEvent);
     }, [onValueChange]);
 
+    const handleTouchStart = useCallback<TouchEventHandler>(e => {
+        e.preventDefault();
+
+        const handleMove = (e: TouchEvent) => {
+            if (e.touches.length === 0) return;
+            const touch = e.touches[0]!;
+            const rect = barRef.current!.getBoundingClientRect();
+            const pos = (touch.clientX - rect.left) / rect.width;
+            const clampedPos = Math.max(0, Math.min(1, pos));
+            setHintPosition(clampedPos);
+            onValueChange?.(clampedPos);
+        };
+
+        const handleEnd = () => {
+            window.removeEventListener('touchmove', handleMove);
+            window.removeEventListener('touchend', handleEnd);
+            window.removeEventListener('touchcancel', handleEnd);
+            setDragging(false);
+            setHintVisible(false);
+        };
+
+        window.addEventListener('touchmove', handleMove, { passive: false });
+        window.addEventListener('touchend', handleEnd);
+        window.addEventListener('touchcancel', handleEnd);
+
+        setDragging(true);
+        setHintVisible(true);
+
+        // Handle initial touch position
+        if (e.touches.length > 0) {
+            const touch = e.touches[0]!;
+            const rect = barRef.current!.getBoundingClientRect();
+            const pos = (touch.clientX - rect.left) / rect.width;
+            const clampedPos = Math.max(0, Math.min(1, pos));
+            setHintPosition(clampedPos);
+            onValueChange?.(clampedPos);
+        }
+    }, [onValueChange]);
+
     const filledStyle = useMemo<CSSProperties>(() => ({
         width: `${value * 100}%`,
     }), [value]);
-
-    const [hintPosition, setHintPosition] = useState(0);
-    const [hintVisible, setHintVisible] = useState(false);
 
     const handleMouseUpdate = useCallback<MouseEventHandler>(e => {
         const rect = barRef.current!.getBoundingClientRect();
@@ -79,6 +118,7 @@ export const Bar: FC<BarProps> = ({
                     setHintPosition(hintPosition);
                     setHintVisible(false);
                 }}
+                onTouchStart={handleTouchStart}
             >
                 {renderHint && <div
                     className={classes['hint'] + ((dragging || hintVisible) ? '' : (' ' + classes['hint-hide']))}

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { VideoControls } from '@components/video-controls';
+import { VideoDrop } from '@components/video-drop';
 import { useRefMemo } from '@hooks/useRefMemo';
 import { useTimer } from '@hooks/useTimer';
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
@@ -20,6 +21,9 @@ export interface VideoPlayerProps {
     selectedVideo?: VideoPlayerContent | null
     selectedAudio?: VideoPlayerContent | null
     selectedSubtitles?: VideoPlayerContent | null
+    onVideoAdded?(video: VideoPlayerContent): void
+    onAudioAdded?(audio: VideoPlayerContent): void
+    onSubtitlesAdded?(subtitles: VideoPlayerContent): void
     onVideoChange?(video: VideoPlayerContent | null): void
     onAudioChange?(audio: VideoPlayerContent | null): void
     onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
@@ -32,6 +36,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     selectedVideo,
     selectedAudio,
     selectedSubtitles,
+    onVideoAdded,
+    onAudioAdded,
+    onSubtitlesAdded,
     onVideoChange,
     onAudioChange,
     onSubtitlesChange,
@@ -281,6 +288,17 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             onVideoChange={onVideoChange}
             onAudioChange={onAudioChange}
             onSubtitlesChange={onSubtitlesChange}
+            onVideoAdded={onVideoAdded}
+            onAudioAdded={onAudioAdded}
+            onSubtitlesAdded={onSubtitlesAdded}
         />
+
+        {(onVideoAdded || onAudioAdded || onSubtitlesAdded) && (
+            <VideoDrop
+                onVideoAdded={onVideoAdded}
+                onAudioAdded={onAudioAdded}
+                onSubtitlesAdded={onSubtitlesAdded}
+            />
+        )}
     </div>;
 };

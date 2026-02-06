@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023-2024 Fabio Iotti
+// SPDX-FileCopyrightText: Copyright 2023-2024, 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Message } from '@components/message';
@@ -7,12 +7,12 @@ import { useDragListener, useDropArea } from '@hooks/dragAndDrop';
 import { FC, useCallback, useState } from 'react';
 import classes from './VideoDrop.module.css';
 
-type ContentKind = 'video' | 'audio' | 'subtitles';
+export type ContentKind = 'video' | 'audio' | 'subtitles';
 
 export interface VideoDropProps {
-    onVideoAdded(video: VideoPlayerContent): void
-    onAudioAdded(audio: VideoPlayerContent): void
-    onSubtitlesAdded(subtitles: VideoPlayerContent): void
+    onVideoAdded?(video: VideoPlayerContent): void
+    onAudioAdded?(audio: VideoPlayerContent): void
+    onSubtitlesAdded?(subtitles: VideoPlayerContent): void
 }
 
 export const VideoDrop: FC<VideoDropProps> = ({
@@ -45,7 +45,7 @@ export const VideoDrop: FC<VideoDropProps> = ({
 
                             const blob = new Blob([str]);
                             const url = URL.createObjectURL(blob);
-                            onSubtitlesAdded({ url, name: `subtitles_${str.length}.${isSrt ? "srt" : ""}.vtt`, type: 'text/vtt' });
+                            onSubtitlesAdded?.({ url, name: `subtitles_${str.length}.${isSrt ? "srt" : ""}.vtt`, type: 'text/vtt' });
 
                             resolve(true);
                         }
@@ -63,12 +63,12 @@ export const VideoDrop: FC<VideoDropProps> = ({
                     const contentKind = await guessFileKind(file);
                     if (contentKind === 'video') {
                         const url = URL.createObjectURL(file);
-                        onVideoAdded({ url, name: file.name, type: file.type });
+                        onVideoAdded?.({ url, name: file.name, type: file.type });
                         return true;
                     }
                     if (contentKind === 'audio') {
                         const url = URL.createObjectURL(file);
-                        onAudioAdded({ url, name: file.name, type: file.type });
+                        onAudioAdded?.({ url, name: file.name, type: file.type });
                         return true;
                     }
                     if (contentKind === 'subtitles') {
@@ -79,11 +79,11 @@ export const VideoDrop: FC<VideoDropProps> = ({
 
                             const blob = new Blob([vtt]);
                             const url = URL.createObjectURL(blob);
-                            onSubtitlesAdded({ url, name: file.name + ".vtt", type: 'text/vtt' });
+                            onSubtitlesAdded?.({ url, name: file.name + ".vtt", type: 'text/vtt' });
                         }
                         else {
                             const url = URL.createObjectURL(file);
-                            onSubtitlesAdded({ url, name: file.name, type: file.type });
+                            onSubtitlesAdded?.({ url, name: file.name, type: file.type });
                         }
                         return true;
                     }
@@ -119,7 +119,7 @@ export const VideoDrop: FC<VideoDropProps> = ({
     </>;
 };
 
-const guessFileKind = async (file: File): Promise<ContentKind | null> => {
+export const guessFileKind = async (file: File): Promise<ContentKind | null> => {
     if (file.type.indexOf('video/') === 0)
         return 'video';
 
@@ -134,7 +134,7 @@ const guessFileKind = async (file: File): Promise<ContentKind | null> => {
     return null;
 };
 
-const guessContentKind = (content: string): ContentKind | null => {
+export const guessContentKind = (content: string): ContentKind | null => {
     if (content.substring(0, 20).indexOf('WEBVTT') !== -1)
         return 'subtitles'; // WebVTT
 
@@ -144,12 +144,12 @@ const guessContentKind = (content: string): ContentKind | null => {
     return null;
 };
 
-const isSubRip = (content: string): boolean => {
+export const isSubRip = (content: string): boolean => {
     const start = content.substring(0, 50);
     return /(^|\n)1[\r\n]/.test(start) && /[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3} --> [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}/.test(start);
 };
 
-const convertSubRipToWebVTT = (srtContent: string): string => {
+export const convertSubRipToWebVTT = (srtContent: string): string => {
     const vttContent = srtContent
         .replace(/\r\n/g, '\n')
         .replace(/([0-9 ]+\n[0-9:]{8}),([0-9]{3}) --> ([0-9:]{8}),([0-9]{3}[ \r\n])/g, '$1.$2 --> $3.$4');
