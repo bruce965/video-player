@@ -1,3 +1,3 @@
 
-export { VideoDrop, type ContentKind, type VideoDropProps } from './VideoDrop';
+export { VideoDrop, type VideoPlayerTrackKind as ContentKind, type VideoDropProps } from './VideoDrop';
 

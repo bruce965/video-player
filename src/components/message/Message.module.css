@@ -7,12 +7,11 @@
   width: 50%;
   inset: 0;
   height: 30%;
-  border-radius: 2em;
-  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0.5em;
+  background: rgba(0, 0, 0, 0.6);
   padding: 2em;
   box-sizing: border-box;
-  box-shadow: 0 .2em 1.4em black;
-  color: black;
+  color: white;
 
   user-select: none;
   display: flex;
@@ -22,18 +21,21 @@
 
 .close {
   position: absolute;
-  top: -.2em;
-  right: -.2em;
-  border-radius: 2em;
-  width: 2em;
-  height: 2em;
-  font-size: 2em;
+  top: 0.3em;
+  right: 0.3em;
+  border-radius: 0.3em;
+  width: 1.8em;
+  height: 1.8em;
+  font-size: 1.2em;
   border: 0;
-  background: rgb(255, 120, 120);
-  box-shadow: 0 .1em .7em #000;
+  background: rgba(0, 0, 0, 0.6);
   cursor: pointer;
-  color: white;
-  text-shadow: 0 0 .1em black;
+  color: inherit;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
 
   &:after {
     content: '×';

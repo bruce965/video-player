@@ -1,3 +1,3 @@
 
-export { VideoPlayer, type VideoPlayerProps, type VideoPlayerTrack as VideoPlayerTrack } from './VideoPlayer';
+export { VideoPlayer, type VideoPlayerProps, type VideoPlayerTrack as VideoPlayerTrack, type VideoPlayerTrackKind } from './VideoPlayer';
 

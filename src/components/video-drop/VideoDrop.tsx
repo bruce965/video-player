@@ -2,13 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Message } from '@components/message';
-import { VideoPlayerTrack } from '@components/video-player';
-import { VideoPlayerTrackKind } from '@components/video-player/VideoPlayer';
+import { VideoPlayerTrack, VideoPlayerTrackKind } from '@components/video-player';
 import { useDragListener, useDropArea } from '@hooks/dragAndDrop';
 import { FC, useCallback, useState } from 'react';
 import classes from './VideoDrop.module.css';
-
-export type ContentKind = 'video' | 'audio' | 'subtitles';
 
 export interface VideoDropProps {
     onTrackAdded(content: VideoPlayerTrack): void
@@ -146,7 +143,7 @@ const guessFileKind = async (file: File): Promise<VideoPlayerTrackKind | null> =
     return null;
 };
 
-const guessContentKind = (content: string): ContentKind | null => {
+const guessContentKind = (content: string): VideoPlayerTrackKind | null => {
     if (content.substring(0, 20).indexOf('WEBVTT') !== -1)
         return 'subtitles'; // WebVTT
 
