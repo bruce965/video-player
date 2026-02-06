@@ -1,15 +1,15 @@
 // SPDX-FileCopyrightText: Copyright 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { VideoPlayerContent } from '@components/video-player';
+import { VideoPlayerTrack } from '@components/video-player';
 import { FC } from 'react';
 import classes from './TrackGroup.module.css';
 
 export interface TrackGroupProps {
     title: string;
-    tracks: VideoPlayerContent[];
-    selectedTrack: VideoPlayerContent | null | undefined;
-    onTrackChange?(track: VideoPlayerContent | null): void;
+    tracks: VideoPlayerTrack[];
+    selectedTrack: VideoPlayerTrack | null | undefined;
+    onTrackChange?(track: VideoPlayerTrack | null): void;
 }
 
 export const TrackGroup: FC<TrackGroupProps> = ({

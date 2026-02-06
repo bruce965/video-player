@@ -1,17 +1,15 @@
-// SPDX-FileCopyrightText: Copyright 2023 Fabio Iotti
+// SPDX-FileCopyrightText: Copyright 2023, 2026 Fabio Iotti
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { VideoPlayer, VideoPlayerContent } from '@components/video-player';
+import { VideoPlayer, VideoPlayerTrack } from '@components/video-player';
 import { FC, useCallback, useEffect, useState } from 'react';
 
 export const App: FC = () => {
-    const [videoTracks, setVideoTracks] = useState<VideoPlayerContent[]>([]);
-    const [audioTracks, setAudioTracks] = useState<VideoPlayerContent[]>([]);
-    const [subtitleTracks, setSubtitleTracks] = useState<VideoPlayerContent[]>([]);
+    const [tracks, setTracks] = useState<VideoPlayerTrack[]>([]);
 
-    const [selectedVideo, setVideo] = useState<VideoPlayerContent | null>(videoTracks[0] ?? null);
-    const [selectedAudio, setAudio] = useState<VideoPlayerContent | null>(audioTracks[0] ?? null);
-    const [selectedSubtitles, setSubtitles] = useState<VideoPlayerContent | null>(subtitleTracks[0] ?? null);
+    const [selectedVideo, setVideo] = useState<VideoPlayerTrack | null>(tracks.filter(t => t.kind === 'video')[0] ?? null);
+    const [selectedAudio, setAudio] = useState<VideoPlayerTrack | null>(tracks.filter(t => t.kind === 'audio')[0] ?? null);
+    const [selectedSubtitles, setSubtitles] = useState<VideoPlayerTrack | null>(tracks.filter(t => t.kind === 'subtitles')[0] ?? null);
 
     // update document title with video name
     useEffect(() => {
@@ -26,35 +24,34 @@ export const App: FC = () => {
         };
     }, [selectedVideo]);
 
-    const handleVideoAdded = useCallback((video: VideoPlayerContent) => {
-        setVideoTracks(current => [...current, video]);
-        setVideo(current => current ?? video);
-    }, []);
+    const handleTrackAdded = useCallback((track: VideoPlayerTrack) => {
+        setTracks(current => [...current, track]);
 
-    const handleAudioAdded = useCallback((audio: VideoPlayerContent) => {
-        setAudioTracks(current => [...current, audio]);
-        setAudio(current => current ?? audio);
-    }, []);
+        switch (track.kind) {
+            case 'video':
+                setVideo(current => current ?? track);
+                break;
 
-    const handleSubtitlesAdded = useCallback((subtitles: VideoPlayerContent) => {
-        setSubtitleTracks(current => [...current, subtitles]);
-        setSubtitles(current => current ?? subtitles);
+            case 'audio':
+                setAudio(current => current ?? track);
+                break;
+
+            case 'subtitles':
+                setSubtitles(current => current ?? track);
+                break;
+        }
     }, []);
 
     return (
         <VideoPlayer
-            videoTracks={videoTracks}
-            audioTracks={audioTracks}
-            subtitleTracks={subtitleTracks}
+            tracks={tracks}
             selectedVideo={selectedVideo}
             selectedAudio={selectedAudio}
             selectedSubtitles={selectedSubtitles}
             onVideoChange={setVideo}
             onAudioChange={setAudio}
             onSubtitlesChange={setSubtitles}
-            onVideoAdded={handleVideoAdded}
-            onAudioAdded={handleAudioAdded}
-            onSubtitlesAdded={handleSubtitlesAdded}
+            onTrackAdded={handleTrackAdded}
         />
     );
 };

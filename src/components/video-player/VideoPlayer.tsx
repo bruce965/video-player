@@ -8,37 +8,35 @@ import { useTimer } from '@hooks/useTimer';
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import classes from './VideoPlayer.module.css';
 
-export interface VideoPlayerContent {
-    url: string;
-    name: string;
-    type: string;
+export type VideoPlayerTrackKind =
+    | 'video'
+    | 'audio'
+    | 'subtitles'
+
+export interface VideoPlayerTrack {
+    kind: VideoPlayerTrackKind
+    url: string
+    name: string
+    type: string
 }
 
 export interface VideoPlayerProps {
-    videoTracks?: VideoPlayerContent[]
-    audioTracks?: VideoPlayerContent[]
-    subtitleTracks?: VideoPlayerContent[]
-    selectedVideo?: VideoPlayerContent | null
-    selectedAudio?: VideoPlayerContent | null
-    selectedSubtitles?: VideoPlayerContent | null
-    onVideoAdded?(video: VideoPlayerContent): void
-    onAudioAdded?(audio: VideoPlayerContent): void
-    onSubtitlesAdded?(subtitles: VideoPlayerContent): void
-    onVideoChange?(video: VideoPlayerContent | null): void
-    onAudioChange?(audio: VideoPlayerContent | null): void
-    onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
+    tracks?: VideoPlayerTrack[]
+    selectedVideo?: VideoPlayerTrack | null
+    selectedAudio?: VideoPlayerTrack | null
+    selectedSubtitles?: VideoPlayerTrack | null
+    onTrackAdded?(track: VideoPlayerTrack): void
+    onVideoChange?(video: VideoPlayerTrack | null): void
+    onAudioChange?(audio: VideoPlayerTrack | null): void
+    onSubtitlesChange?(subtitles: VideoPlayerTrack | null): void
 }
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({
-    videoTracks = [],
-    audioTracks = [],
-    subtitleTracks = [],
+    tracks = [],
     selectedVideo,
     selectedAudio,
     selectedSubtitles,
-    onVideoAdded,
-    onAudioAdded,
-    onSubtitlesAdded,
+    onTrackAdded,
     onVideoChange,
     onAudioChange,
     onSubtitlesChange,
@@ -57,9 +55,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
         let nextPauseIsFromCode = false;
         let userWantsToPlay = false;
 
-        let currentVideoSource: VideoPlayerContent | null = null;
-        let currentAudioSource: VideoPlayerContent | null = null;
-        let currentSubtitlesSource: VideoPlayerContent | null = null;
+        let currentVideoSource: VideoPlayerTrack | null = null;
+        let currentAudioSource: VideoPlayerTrack | null = null;
+        let currentSubtitlesSource: VideoPlayerTrack | null = null;
 
         const updatePlayState = () => {
             setPlaying(userWantsToPlay);
@@ -142,7 +140,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                 audio.current!.playbackRate = video.current!.playbackRate;
             },
 
-            sourceChangeHandler(selectedVideo: VideoPlayerContent | null, selectedAudio: VideoPlayerContent | null, selectedSubtitles: VideoPlayerContent | null) {
+            sourceChangeHandler(selectedVideo: VideoPlayerTrack | null, selectedAudio: VideoPlayerTrack | null, selectedSubtitles: VideoPlayerTrack | null) {
                 const reloadVideo = currentVideoSource !== selectedVideo;
                 const reloadAudio = currentAudioSource !== selectedAudio;
                 const reloadSubtitles = selectedSubtitles !== currentSubtitlesSource;
@@ -256,7 +254,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             onTimeUpdate={state.updateTime}
         >
             {selectedVideo != null && <source src={selectedVideo.url} type={selectedVideo.type} />}
-            {subtitleTracks?.map(sub => <track key={sub.url} src={sub.url} kind="subtitles" label={sub.name} default={sub === selectedSubtitles} />)}
+            {tracks.filter(t => t.kind === 'subtitles').map(sub => <track key={sub.url} src={sub.url} kind="subtitles" label={sub.name} default={sub === selectedSubtitles} />)}
         </video>
 
         <audio
@@ -269,9 +267,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
         <VideoControls
             show={showInterface}
-            videoTracks={videoTracks}
-            audioTracks={audioTracks}
-            subtitleTracks={subtitleTracks}
+            tracks={tracks}
             selectedVideo={selectedVideo}
             selectedAudio={selectedAudio}
             selectedSubtitles={selectedSubtitles}
@@ -288,16 +284,12 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             onVideoChange={onVideoChange}
             onAudioChange={onAudioChange}
             onSubtitlesChange={onSubtitlesChange}
-            onVideoAdded={onVideoAdded}
-            onAudioAdded={onAudioAdded}
-            onSubtitlesAdded={onSubtitlesAdded}
+            onTrackAdded={onTrackAdded}
         />
 
-        {(onVideoAdded || onAudioAdded || onSubtitlesAdded) && (
+        {(onTrackAdded) && (
             <VideoDrop
-                onVideoAdded={onVideoAdded}
-                onAudioAdded={onAudioAdded}
-                onSubtitlesAdded={onSubtitlesAdded}
+                onTrackAdded={onTrackAdded}
             />
         )}
     </div>;

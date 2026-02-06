@@ -3,7 +3,7 @@
 
 import { SeekBar } from '@components/seek-bar';
 import { TrackSelector } from '@components/track-selector';
-import { VideoPlayerContent } from '@components/video-player';
+import { VideoPlayerTrack } from '@components/video-player';
 import { VolumeBar } from '@components/volume-bar/VolumeBar';
 import { formatDuration } from '@utils/formatDuration';
 import { FC, useCallback } from 'react';
@@ -13,12 +13,10 @@ import classes from './VideoControls.module.css';
 
 export interface VideoControlsProps {
     show: boolean
-    videoTracks: VideoPlayerContent[]
-    audioTracks: VideoPlayerContent[]
-    subtitleTracks: VideoPlayerContent[]
-    selectedVideo?: VideoPlayerContent | null
-    selectedAudio?: VideoPlayerContent | null
-    selectedSubtitles?: VideoPlayerContent | null
+    tracks: VideoPlayerTrack[]
+    selectedVideo?: VideoPlayerTrack | null
+    selectedAudio?: VideoPlayerTrack | null
+    selectedSubtitles?: VideoPlayerTrack | null
     isPlaying: boolean
     currentTime: number
     totalTime: number
@@ -29,19 +27,15 @@ export interface VideoControlsProps {
     onSeek?(time: number): void
     onVolumeChange?(volume: number): void
     onFullscreenChange?(fullscreen: boolean): void
-    onVideoChange?(video: VideoPlayerContent | null): void
-    onAudioChange?(audio: VideoPlayerContent | null): void
-    onSubtitlesChange?(subtitles: VideoPlayerContent | null): void
-    onVideoAdded?(video: VideoPlayerContent): void
-    onAudioAdded?(audio: VideoPlayerContent): void
-    onSubtitlesAdded?(subtitles: VideoPlayerContent): void
+    onVideoChange?(video: VideoPlayerTrack | null): void
+    onAudioChange?(audio: VideoPlayerTrack | null): void
+    onSubtitlesChange?(subtitles: VideoPlayerTrack | null): void
+    onTrackAdded?(track: VideoPlayerTrack): void
 }
 
 export const VideoControls: FC<VideoControlsProps> = ({
     show,
-    videoTracks,
-    audioTracks,
-    subtitleTracks,
+    tracks,
     selectedVideo,
     selectedAudio,
     selectedSubtitles,
@@ -58,9 +52,7 @@ export const VideoControls: FC<VideoControlsProps> = ({
     onVideoChange,
     onAudioChange,
     onSubtitlesChange,
-    onVideoAdded,
-    onAudioAdded,
-    onSubtitlesAdded,
+    onTrackAdded,
 }) => {
     const seekHandler = useCallback((position: number) => {
         onSeek?.(position * totalTime);
@@ -74,18 +66,14 @@ export const VideoControls: FC<VideoControlsProps> = ({
         className={classes['controls'] + (show ? '' : (' ' + classes['controls-hidden']))}
     >
         <TrackSelector
-            videoTracks={videoTracks}
-            audioTracks={audioTracks}
-            subtitleTracks={subtitleTracks}
+            tracks={tracks}
             selectedVideo={selectedVideo}
             selectedAudio={selectedAudio}
             selectedSubtitles={selectedSubtitles}
             onVideoChange={onVideoChange}
             onAudioChange={onAudioChange}
             onSubtitlesChange={onSubtitlesChange}
-            onVideoAdded={onVideoAdded}
-            onAudioAdded={onAudioAdded}
-            onSubtitlesAdded={onSubtitlesAdded}
+            onTrackAdded={onTrackAdded}
         />
 
         <div className={classes['left']}>
